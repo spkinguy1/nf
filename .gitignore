@@ -1,4 +1,4 @@
 /target
 Cargo.lock
 .gitignore
-/src
+/src/main.rs
