@@ -28,47 +28,41 @@ fn main() {
         #folder_name3
     "
         )
-    }else {
+    } else {
+        for i in 1..args.len() {
+            let mut buffer: Vec<Vec<&str>> = vec![];
 
+            let parser_1: Vec<&str> = args[i].split("/").collect();
 
-    for i in 1..args.len() {
-        let mut buffer: Vec<Vec<&str>> = vec![];
+            for f in 0..parser_1.len() {
+                let parser_2: Vec<&str> = parser_1[f].split(",").collect();
 
-        let parser_1: Vec<&str> = args[i].split("/").collect();
+                buffer.push(parser_2);
+            }
 
-        for f in 0..parser_1.len() {
-            let parser_2: Vec<&str> = parser_1[f].split(",").collect();
+            // println!("{:?}",buffer);
+            // Gets whole the parsed values as Vector in Vector
 
-            buffer.push(parser_2);
-        }
+            let mut repo: Vec<String> = vec![]; // the repo for create Dirs from this
 
-        // println!("{:?}",buffer);
-        // Gets whole the parsed values as Vector in Vector
+            for g in 0..buffer.len() {
+                let delimiter = repo.last().unwrap_or(&"".to_owned()).clone();
 
-        let mut repo: Vec<String> = vec![]; // the repo for create Dirs from this
-
-        for g in 0..buffer.len() {
-            let delimiter = repo.last().unwrap_or(&"".to_owned()).clone();
-
-            for d in 0..buffer[g].len() {
-                if repo.len() == 0 {
-                    repo.push(buffer[g][d].to_owned() + "/");
-                } else {
-                    repo.push(String::from(&delimiter) + buffer[g][d] + "/");
+                for d in 0..buffer[g].len() {
+                    if repo.len() == 0 {
+                        repo.push(buffer[g][d].to_owned() + "/");
+                    } else {
+                        repo.push(String::from(&delimiter) + buffer[g][d] + "/");
+                    }
                 }
             }
-        }
-        // let fix_manual_bug = repo.remove(0);
-        // drop(fix_manual_bug);
 
-        for s in 0..repo.len() {
-            DirBuilder::new()
-                .recursive(true)
-                .create(&repo[s])
-                .unwrap()
+            for s in 0..repo.len() {
+                DirBuilder::new().recursive(true).create(&repo[s]).unwrap()
+            }
         }
     }
-}
+
     // thread::sleep(Duration::from_millis(500));
     // println!("hello");
 
