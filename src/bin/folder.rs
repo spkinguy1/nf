@@ -8,6 +8,8 @@ use std::fs::DirBuilder;
 fn main() {
     let args: Vec<String> = env::args().collect();
 
+    // check if the first argument is "!help" , shows how to use !
+
     if args[1] == "!help" {
         println!(
             "Created by Mahdi Rashidi ! 
@@ -28,26 +30,42 @@ fn main() {
         #folder_name3
     "
         )
+    // otherwise parse arguments and gather them in a vector    
     } else {
+
+        // this big for loop will execute per argument
+        //arguments seperates by [space] in runtime
+        
         for i in 1..args.len() {
+
+            //this is vector parsed first by "/" and then ","
+            //initialize empty
             let mut buffer: Vec<Vec<&str>> = vec![];
 
+            // parse command by "/" and make it into vector
             let parser_1: Vec<&str> = args[i].split("/").collect();
-
+            
+            // parse each element in vector by "," and take it back again
             for f in 0..parser_1.len() {
                 let parser_2: Vec<&str> = parser_1[f].split(",").collect();
 
                 buffer.push(parser_2);
             }
+            
 
-            // println!("{:?}",buffer);
-            // Gets whole the parsed values as Vector in Vector
-
-            let mut repo: Vec<String> = vec![]; // the repo for create Dirs from this
-
+            // create repo vector from buffer and make a
+            // repo that is resource for create Dirs from it
+            let mut repo: Vec<String> = vec![]; 
+            
+            //for each element in buffer
             for g in 0..buffer.len() {
-                let delimiter = repo.last().unwrap_or(&"".to_owned()).clone();
 
+                // we try to do that by example :
+                // command : a,b/z/f
+                // [a , b ,b/z , b/z/f]
+                let delimiter = repo.last().unwrap_or(&"".to_owned()).clone();
+                
+                //for each element in elements in buffer
                 for d in 0..buffer[g].len() {
                     if repo.len() == 0 {
                         repo.push(buffer[g][d].to_owned() + "/");
@@ -57,25 +75,11 @@ fn main() {
                 }
             }
 
+            // create directories from the repo
+
             for s in 0..repo.len() {
                 DirBuilder::new().recursive(true).create(&repo[s]).unwrap()
             }
         }
     }
-
-    // thread::sleep(Duration::from_millis(500));
-    // println!("hello");
-
-    // thread::sleep(Duration::from_millis(500));
-    // println!("Folders created don't forget to remove them after run the program");
-    // thread::sleep(Duration::from_millis(3000));
-    // println!("programm will end after 3 secconds");
-    // thread::sleep(Duration::from_millis(500));
-
-    // for i in 1..=3 {
-
-    //     println!("{}",i);
-    //     thread::sleep(Duration::from_millis(1000));
-
-    // }
 }
