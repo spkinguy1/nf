@@ -36,18 +36,18 @@ fn main() {
         // this big for loop will execute per argument
         //arguments seperates by [space] in runtime
         
-        for i in 1..args.len() {
+        for i in args.iter().skip(1) {
 
             //this is vector parsed first by "/" and then ","
             //initialize empty
             let mut buffer: Vec<Vec<&str>> = vec![];
 
             // parse command by "/" and make it into vector
-            let parser_1: Vec<&str> = args[i].split("/").collect();
+            let parser_1: Vec<&str> = i.split('/').collect();
             
             // parse each element in vector by "," and take it back again
-            for f in 0..parser_1.len() {
-                let parser_2: Vec<&str> = parser_1[f].split(",").collect();
+            for f in &parser_1 {
+                let parser_2: Vec<&str> = f.split(',').collect();
 
                 buffer.push(parser_2);
             }
@@ -58,7 +58,7 @@ fn main() {
             let mut repo: Vec<String> = vec![]; 
             
             //for each element in buffer
-            for g in 0..buffer.len() {
+            for g in buffer {
 
                 // we try to do that by example :
                 // command : a,b/z/f
@@ -66,19 +66,19 @@ fn main() {
                 let delimiter = repo.last().unwrap_or(&"".to_owned()).clone();
                 
                 //for each element in elements in buffer
-                for d in 0..buffer[g].len() {
-                    if repo.len() == 0 {
-                        repo.push(buffer[g][d].to_owned() + "/");
+                for d in g {
+                    if repo.is_empty() {
+                        repo.push(d.to_owned() + "/");
                     } else {
-                        repo.push(String::from(&delimiter) + buffer[g][d] + "/");
+                        repo.push(String::from(&delimiter) + d + "/");
                     }
                 }
             }
 
             // create directories from the repo
 
-            for s in 0..repo.len() {
-                DirBuilder::new().recursive(true).create(&repo[s]).unwrap()
+            for s in repo {
+                DirBuilder::new().recursive(true).create(s).unwrap()
             }
         }
     }
