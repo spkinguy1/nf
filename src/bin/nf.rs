@@ -29,7 +29,7 @@ fn main() {
         #folder_name2
         #folder_name3
     "
-        )
+        );
     // otherwise parse arguments and gather them in a vector    
     } else {
 
@@ -62,7 +62,7 @@ fn main() {
 
                 // we try to do that by example :
                 // command : a,b/z/f
-                // [a , b ,b/z , b/z/f]
+                // ==> [a , b ,b/z , b/z/f]
                 let delimiter = repo.last().unwrap_or(&"".to_owned()).clone();
                 
                 //for each element in elements in buffer
@@ -78,7 +78,7 @@ fn main() {
             // create directories from the repo
 
             for s in repo {
-                DirBuilder::new().recursive(true).create(s).unwrap()
+                DirBuilder::new().recursive(true).create(s).unwrap();
             }
         }
     }
